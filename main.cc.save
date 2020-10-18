@@ -1,0 +1,31 @@
+// Server side C/C++ program to demonstrate Socket programming 
+#include <string>
+#include <iostream>
+//#include "device/Device.h"
+#include "class_server/Server.h"
+
+
+
+int main(int argc, char const *argv[]) 
+{ 
+
+	// server needs to be part of every device
+	// every device imports the class of the device here
+	// server has to listen to client but send back different thing for different device
+
+	// device must have an exec("command") with a switch calling the function
+	printf("!!! INIT !!! -> ADD AS ARG THE NAME OF THE DEVICE!!");
+	const char* name = argv[1];
+	Device device(name);
+
+	std::cout << device.getName() << std::endl;
+
+	//device.setOperationResult();
+	//std::cout <<"abcd  " << device.getOperationResult() << std::endl;
+
+	//const char *resp = device.getOperationResult();
+	const char *resp;
+	Server server;
+	int a = server.serve(8080 , resp, device );
+
+	return 0; } 

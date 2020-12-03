@@ -11,21 +11,25 @@ Device::Device(const char* str){
 const char* Device::getName(){
     return name;
 }
-
+// IN
 
 // @ SET
 // SETTING property operationresult
 void Device::setOperationResult( char* buffer ){
 
+    const int COMMANDCHARS = 4;
+
     // get parameter from request
     const char *commandParameterFromRequestBuffer = getWord('/',' ',buffer);
     
     // store value of command
-    char command[20] = {0};
+    char command[COMMANDCHARS +1] = {0};
+    command[5]= '\0';
+
     strcat(command,commandParameterFromRequestBuffer);
     
     // get errors from somewhere
-    const char *error = "computers starting hate humanity";
+    const char *error = "command not found";
 
     // empty operationResult array
     std::fill( std::begin( operationResult ), std::end( operationResult ), 0 );
@@ -47,8 +51,45 @@ void Device::setOperationResult( char* buffer ){
     // insert device name
     strcat(operationResult, name);
 
+    //
+    //
+    // function check for command
+
+
+    int commandExists = 0;
+    int allCommandsLength = 16;
+    int commandLength = 4;
+
+    // select command from commandlist
+    for (int i=0; i < allCommandsLength; i+=commandLength ){
+        printf("i = %i \n",i);
+
+
+        for (int j =0 ; j < commandLength ; j++){
+            if(commands[i+j] == command[j]){
+                printf("%i) letter %c is in this place \n",j, commands[j]);
+                commandExists++;
+            }else{
+                commandExists = 0;
+                printf("%i) letter %c is not in this place \n",j, command[j]);
+                j=0;
+                break;
+            }
+            
+        }
+        if(commandExists >= commandLength){
+            printf("command %s exists %i \n", &command[0], commandExists);
+            break;
+        }
+
+    }
+
+    //end function find commands
+    const int functionReturnsTrue = commandExists >= commandLength;
+    //
+
     // define result
-    if(0){
+    if(functionReturnsTrue){
         const char* ok = " went good";
         strcat(operationResult, ok);
     }else{
@@ -57,7 +98,7 @@ void Device::setOperationResult( char* buffer ){
         strcat(operationResult, error);
     }
 
-    printf("IN DEVICE: %s",operationResult);
+    //printf("IN DEVICE: %s",operationResult);
     // THIS FUNCTION JUST SET THE CLASS PROPERTY operationResult
 
 };

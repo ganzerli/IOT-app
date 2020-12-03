@@ -19,6 +19,8 @@ int Server::serve(int port , const char* hello, Device *device) {
 	int addrlen = sizeof(address); 
 	char buffer[1024] = {0}; 
 
+
+
 	// application/json;charset=utf-8
 	// Creating socket file descriptor 
 	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) { 
@@ -60,7 +62,6 @@ int Server::serve(int port , const char* hello, Device *device) {
 
 		// Takes the parameter in the request after / and sets if the operation went good with the command found in the http request (buffer);
 		device->setOperationResult(&buffer[0]);
-
 		// get the message if the command went ok from device class
 		const char* payload = &device->getOperationResult()[0];
 
